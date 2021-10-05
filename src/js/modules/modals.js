@@ -1,21 +1,29 @@
 const modals = () => {
-    function bindModal(triggerSelector, modalSelector, closeSelector, closeClickOverlay = true) {
+    // Переменная, которая следит была ли нажата какая-то кнопка
+    let btnPressed = false;
+
+    function bindModal(triggerSelector, modalSelector, closeSelector, destroy = false) {
         const trigger = document.querySelectorAll(triggerSelector),
               modal = document.querySelector(modalSelector),
               close = document.querySelector(closeSelector),
               windows = document.querySelectorAll('[data-modal]'),
+              present = document.querySelector('.fixed-gift'),
               scroll = calcScroll();
+        
+        present.classList.add('animated', 'pulse');
 
         function openModal() {
             modal.style.display = 'block';
             document.body.style.overflow = 'hidden';
             document.body.style.marginRight = `${scroll}px`;
+            present.style.marginRight = `${scroll}px`;
         }
 
         function closeModal() {
             modal.style.display = 'none';
             document.body.style.overflow = '';
             document.body.style.marginRight = `0px`;
+            present.style.marginRight = `0px`;
         }
      
         trigger.forEach(btn => {  
@@ -24,9 +32,16 @@ const modals = () => {
                     event.preventDefault();
                 }
 
+                btnPressed = true;
+
+                if (destroy) {
+                    btn.remove();
+                }
+
                 // Закрываем все модальные окна c data-атрибутами
                 windows.forEach(item => {
                     item.style.display = 'none';
+                    item.classList.add('animated', 'fadeIn');
                 });
 
                 openModal();
@@ -45,7 +60,7 @@ const modals = () => {
 
         // Закрытие модального окна при клике на подложку
         modal.addEventListener('click', (event) => {
-            if (event.target === modal && closeClickOverlay) {
+            if (event.target === modal) {
                 // Закрываем все модальные окна c data-атрибутами
                 windows.forEach(item => {
                     item.style.display = 'none';
@@ -69,6 +84,8 @@ const modals = () => {
             if (!isAnyModalShown) {
                 document.querySelector(selector).style.display = 'block';
                 document.body.style.overflow = 'hidden';
+
+                let scroll = calcScroll();
                 document.body.style.marginRight = `${scroll}px`;
             }
         }, time);
@@ -88,10 +105,23 @@ const modals = () => {
 
         return scrollWidth;
     }
+
+    // Открывает модальное окно подарка при прокрутке пользователем до конца страницы
+    function openByScroll(selector) {
+        window.addEventListener('scroll', () => {
+            let scrollHeight = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight);
+
+            if (!btnPressed && (window.pageYOffset + document.documentElement.clientHeight >= scrollHeight)) {
+                document.querySelector(selector).click(); // вызвали событие вручную
+            }
+        });
+    }
        
     bindModal('.button-design', '.popup-design', '.popup-design .popup-close');
     bindModal('.button-consultation', '.popup-consultation', '.popup-consultation .popup-close');
-    showModalByTime('.popup-consultation', 6000);
+    bindModal('.fixed-gift', '.popup-gift', '.popup-gift .popup-close', true);
+    openByScroll('.fixed-gift');
+    showModalByTime('.popup-consultation', 60000);
 };
 
 export default modals;
