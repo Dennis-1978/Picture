@@ -1,6 +1,6 @@
 const sliders = (slides, direction, prev, next) => {
     let slideIndex = 1,
-        paused = false; // остановка переключения слайдов
+        paused = false;
 
     const items = document.querySelectorAll(slides);
 
@@ -53,14 +53,12 @@ const sliders = (slides, direction, prev, next) => {
                 plusSlides(1);
                 items[slideIndex - 1].classList.add('slideInDown');
             }, 3000);
-            console.log('Вертикальное направление', paused);
         } else {
             paused = setInterval(function() {
                 plusSlides(1);
                 items[slideIndex - 1].classList.remove('slideInRight');
                 items[slideIndex - 1].classList.add('slideInLeft');
             }, 3000);
-            console.log('Горизонтальное направление', paused);
         }
     }
 
@@ -68,12 +66,10 @@ const sliders = (slides, direction, prev, next) => {
 
     items[0].parentNode.addEventListener('mouseenter', () => {
         clearInterval(paused);
-        console.log('При наведении на слайдер', paused);
     });
 
     items[0].parentNode.addEventListener('mouseleave', () => {
         activateAnimation();
-        console.log('Убрали курсор со слайдера',paused);
     });
         
 };

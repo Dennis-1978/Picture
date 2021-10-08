@@ -10,7 +10,7 @@ const modals = () => {
               present = document.querySelector('.fixed-gift'),
               scroll = calcScroll();
         
-        present.classList.add('animated', 'pulse');
+        present.classList.add('animated');
 
         function openModal() {
             modal.style.display = 'block';
