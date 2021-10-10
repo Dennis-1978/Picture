@@ -1,7 +1,7 @@
 import { postData } from "../services/requests";
 
 
-const forms = () => {
+const forms = (state) => {
     const form = document.querySelectorAll('form'),
           inputs = document.querySelectorAll('input'),
           upload = document.querySelectorAll('[name=upload');
@@ -34,7 +34,7 @@ const forms = () => {
 
     upload.forEach(item => {
         item.addEventListener('input', () => {
-            console.log(item.files[0]);
+
             let dots;
             const arr = item.files[0].name.split('.');
             arr[0].length > 6 ? dots = '...' : dots = '.';
@@ -67,8 +67,16 @@ const forms = () => {
             statusMessage.appendChild(textMessage);
 
             const formData = new FormData(item);
+          
+            if (item.classList.contains('calc_form')) {
+                for (let key in state) {
+                    formData.append(key, state[key]);
+                    console.log(state);
+                }
+            }
 
             let api; // для формирования динамического пути отправки данных
+
             item.closest('.popup-design') || item.classList.contains('calc_form') ? api = path.designer : api = path.question;
             console.log(api);
 

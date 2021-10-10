@@ -18,7 +18,7 @@ const showMoreStyles = (trigger, wrapper) => {
     // }); 
     
     btn.addEventListener('click', function() {
-        getResource('http://localhost:3000/style')
+        getResource('http://localhost:3000/styles')
             .then(res => createCards(res))
             .catch(() => createMessageFailure());
 
