@@ -910,12 +910,7 @@ h4 {
 }
 
 .often-questions .accordion-heading.active+.accordion-block {
-  /* display: block; */
-  height: auto;
-  margin-top: 1rem;
-  padding: 3rem 4rem;
-  opacity: 1;
-  overflow: visible;
+  display: block;
 }
 
 .often-questions .accordion-block {
