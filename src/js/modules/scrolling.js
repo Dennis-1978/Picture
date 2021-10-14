@@ -20,7 +20,7 @@ const scrolling = (upSelector) => {
         link.addEventListener('click', function(event) {
             event.preventDefault();
 
-            let widthTop = document.documentElement.scrollTop,
+            let heightTop = document.documentElement.scrollTop,
                 hash = this.hash,
                 toBlock = document.querySelector(hash).getBoundingClientRect().top,
                 start = null;
@@ -33,12 +33,12 @@ const scrolling = (upSelector) => {
                 }
 
                 let progress = time - start,
-                    r = (toBlock < 0 ? Math.max(widthTop - progress / speed, widthTop + toBlock) :
-                         Math.min(widthTop + progress / speed, widthTop + toBlock));
+                    r = (toBlock < 0 ? Math.max(heightTop - progress / speed, heightTop + toBlock) :
+                         Math.min(heightTop + progress / speed, heightTop + toBlock));
                     
                     document.documentElement.scrollTo(0, r);
                     
-                    if (r != widthTop + toBlock) {
+                    if (r != heightTop + toBlock) {
                         requestAnimationFrame(step);
                     } else {
                         location.hash = hash;
@@ -48,18 +48,13 @@ const scrolling = (upSelector) => {
     });
 
 
-    // Реализация плавного скролла страницы на чисом js
+    // Реализация плавного скролла - способ 1
     // const element = document.documentElement,
     //       body = document.body;
 
     // const calcScroll = () => {
     //     upElem.addEventListener('click', function(event) {
-    //         let scrollTop = Math.round(body.scrollTop || element.scrollTop);
-
-    //         console.log('body.scrollTop:', body.scrollTop);
-    //         console.log('element.scrollTop:', element.scrollTop);
-    //         console.log('This:', this);
-    //         console.log('This.hash:', this.hash);
+    //          let scrollTop = Math.round(body.scrollTop || element.scrollTop);
 
     //         if (this.hash !== '') {
     //             event.preventDefault();
@@ -80,14 +75,15 @@ const scrolling = (upSelector) => {
     // };
 
     // const smoothScroll = (from, to, hash) => {
+
     //     let timeInterval = 1,
     //         prevScrollTop,
     //         speed;
 
     //     if (to > from) {
-    //         speed = 30;
+    //         speed = 1;
     //     } else {
-    //         speed = -30;
+    //         speed = -1;
     //     }
 
     //     let move = setInterval(function() {
