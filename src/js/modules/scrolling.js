@@ -35,14 +35,15 @@ const scrolling = (upSelector) => {
                 let progress = time - start,
                     r = (toBlock < 0 ? Math.max(heightTop - progress / speed, heightTop + toBlock) :
                          Math.min(heightTop + progress / speed, heightTop + toBlock));
+                console.log('R:', r);
                     
-                    document.documentElement.scrollTo(0, r);
-                    
-                    if (r != heightTop + toBlock) {
-                        requestAnimationFrame(step);
-                    } else {
-                        location.hash = hash;
-                    }
+                document.documentElement.scrollTo(0, r);
+                
+                if (r != heightTop + toBlock) {
+                    requestAnimationFrame(step);
+                } else {
+                    location.hash = hash;
+                }
             }
         });
     });
