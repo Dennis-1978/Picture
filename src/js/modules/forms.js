@@ -71,18 +71,15 @@ const forms = (state) => {
             if (item.classList.contains('calc_form')) {
                 for (let key in state) {
                     formData.append(key, state[key]);
-                    console.log(state);
                 }
-            }
+            }        
 
             let api; // для формирования динамического пути отправки данных
 
             item.closest('.popup-design') || item.classList.contains('calc_form') ? api = path.designer : api = path.question;
-            console.log(api);
 
             postData(api, formData)
                 .then(result => {
-                    console.log(result);
                     statusImg.setAttribute('src', message.ok);
                     textMessage.textContent = message.success;
                 })

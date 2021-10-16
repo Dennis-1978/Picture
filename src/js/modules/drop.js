@@ -1,5 +1,8 @@
+import { postData } from "../services/requests";
+
 const drop = () => {
-    const fileInputs = document.querySelectorAll('[name="upload"]');
+    const fileInputs = document.querySelectorAll('[name="upload"]'),
+          upload = document.querySelectorAll('[name=upload');
     
     ['dragenter', 'dragleave', 'dragover', 'drop'].forEach (eventName => {
         fileInputs.forEach(input => {
@@ -42,16 +45,46 @@ const drop = () => {
         });
     });
 
+    const clearInputs = () => {
+        fileInputs.forEach(item => {
+            item.value = '';
+        });
+
+        upload.forEach(item => {
+            item.previousElementSibling.textContent = 'Файл не выбран';
+        });
+    };
+
+
     fileInputs.forEach(input => {
         input.addEventListener('drop', (event) => {
-            console.log(input.files);
             input.files = event.dataTransfer.files;
+
+            console.log(input.files[0]);
 
             let dots;
             const arr = input.files[0].name.split('.');
             arr[0].length > 6 ? dots = '...' : dots = '.';
             const name = arr[0].substring(0, 6) + dots + arr[1];
             input.previousElementSibling.textContent = name;
+
+            if (input.closest('.main')) {
+
+                const formData = new FormData();
+                formData.append('file', input.files[0]);             
+
+                postData('assets/server.php', formData)
+                .then(result => {
+                    console.log(result);
+                })
+                .catch(() => {
+                    console.log('Error');
+                })
+                .finally(() => {
+                    clearInputs();
+                });
+            }
+
         });
     });
 
